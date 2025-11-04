@@ -1,46 +1,184 @@
-package Ejercicio_3;
+package ReservaVuelos;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.Random;
 
+/**
+ * Cliente del sistema de reservas de vuelos.
+ * Intenta reservar el máximo número de plazas posible de forma automática.
+ */
 public class Cliente extends Conexion {
+    private static final Object CONSOLE_LOCK = new Object();
+    private final String nombreCliente;
 
-    public Cliente() throws IOException {
+    /**
+     * Pre: nombre != null y no vacío
+     * Post: Se crea un cliente conectado al servidor con el nombre especificado
+     *
+     * @param nombre Nombre identificador del cliente
+     */
+    public Cliente(String nombre) throws IOException {
         super("cliente");
+        this.nombreCliente = nombre;
     }
 
-    public void empezar_Cliente() throws IOException {
+    /**
+     * Pre: Debe estar conectado al servidor
+     * Post: El cliente intenta reservar plazas hasta que el vuelo esté completo.
+     *       Se muestra un resumen con el número de plazas reservadas.
+     *       Todos los recursos se cierran correctamente.
+     */
+    public void startClient() {
+        DataInputStream in = null;
+        DataOutputStream out = null;
 
-        Scanner lector = new Scanner(System.in);
+        try {
+            in = new DataInputStream(cs.getInputStream());
+            out = new DataOutputStream(cs.getOutputStream());
 
-        try{
-            //Variables
-            DataInputStream in = new DataInputStream(sc.getInputStream());
-            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
-            String mensaje = in.readUTF();
-            String siguienteMensaje;
-            while(true) {
+            imprimirEncabezado();
 
-                //Programa que escribe una frase para contar vocales
-                System.out.println(mensaje);
-                System.out.println("--Menu--");
-                System.out.println("\n Escribe el siguiente mensaje para contar vocales: ");
-                siguienteMensaje = lector.nextLine();
+            String mensajeInicio = "INICIO COMPRA:" + nombreCliente;
+            out.writeUTF(mensajeInicio);
+            out.flush();
 
-                //Si se escribe end of service se corta la conexion entre el cliente y el servidor
-                if (siguienteMensaje.equalsIgnoreCase("end of service")) {
+            String respuesta = in.readUTF();
 
-                    out.writeUTF(siguienteMensaje);
-                    System.out.println("Cerrando conexion...");
-                    break;
+            if (!respuesta.equals("BIENVENIDO AL SERVICIO")) {
+                synchronized (CONSOLE_LOCK) {
+                    System.err.println("[" + nombreCliente + "] Error: No se recibió bienvenida del servidor");
+                }
+                return;
+            }
+
+            synchronized (CONSOLE_LOCK) {
+                System.out.println("[" + nombreCliente + "] Conexión establecida. Iniciando reservas...");
+            }
+
+            int plazasReservadas = realizarReservas(in, out);
+
+            mostrarResumen(plazasReservadas);
+
+        } catch (IOException e) {
+            synchronized (CONSOLE_LOCK) {
+                System.err.println("[" + nombreCliente + "] Error de comunicación con el servidor: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            synchronized (CONSOLE_LOCK) {
+                System.err.println("[" + nombreCliente + "] Error inesperado: " + e.getMessage());
+            }
+        } finally {
+            cerrarRecursos(in, out);
+        }
+    }
+
+    /**
+     * Pre: ninguna
+     * Post: Imprime el encabezado del cliente de forma sincronizada
+     */
+    private void imprimirEncabezado() {
+        synchronized (CONSOLE_LOCK) {
+            System.out.println();
+            System.out.println("[" + nombreCliente + "] ==========================================");
+            System.out.println("[" + nombreCliente + "]   CLIENTE: " + nombreCliente);
+            System.out.println("[" + nombreCliente + "] ==========================================");
+        }
+    }
+
+    /**
+     * Pre: in != null, out != null
+     * Post: Intenta reservar plazas hasta que el vuelo esté completo.
+     *       Retorna el número de plazas reservadas exitosamente.
+     *
+     * @param in Stream de entrada para recibir respuestas del servidor
+     * @param out Stream de salida para enviar peticiones al servidor
+     */
+    private int realizarReservas(DataInputStream in, DataOutputStream out)
+            throws IOException, InterruptedException {
+
+        int plazasReservadas = 0;
+        Random random = new Random();
+        char[] asientos = {'A', 'B', 'C', 'D'};
+
+        while (true) {
+            int fila = random.nextInt(4) + 1;
+            char asiento = asientos[random.nextInt(4)];
+            String plaza = "" + fila + asiento;
+
+            String peticion = "RESERVAR:" + plaza;
+            out.writeUTF(peticion);
+            out.flush();
+
+            String respuesta = in.readUTF();
+
+            if (respuesta.startsWith("RESERVADA:")) {
+                plazasReservadas++;
+                String plazaReservada = respuesta.substring(10);
+                synchronized (CONSOLE_LOCK) {
+                    System.out.println("[" + nombreCliente + "] ✓ Plaza " + plazaReservada + " reservada (Total: " + plazasReservadas + ")");
+                }
+            } else if (respuesta.equals("VUELO COMPLETO")) {
+                synchronized (CONSOLE_LOCK) {
+                    System.out.println("[" + nombreCliente + "] Vuelo completo - No hay más plazas disponibles");
+                }
+                break;
+            } else if (respuesta.startsWith("ERROR:")) {
+                synchronized (CONSOLE_LOCK) {
+                    System.err.println("[" + nombreCliente + "] Error del servidor: " + respuesta.substring(6));
                 }
             }
-        }catch(Exception e){
 
-            System.out.println("Error al conectar");
+            Thread.sleep(100);
         }
 
+        return plazasReservadas;
+    }
+
+    /**
+     * Pre: plazasReservadas >= 0
+     * Post: Muestra en pantalla un resumen con el número de plazas reservadas
+     *
+     * @param plazasReservadas Número de plazas reservadas por el cliente
+     */
+    private void mostrarResumen(int plazasReservadas) {
+        synchronized (CONSOLE_LOCK) {
+            System.out.println("[" + nombreCliente + "] ==========================================");
+            System.out.println("[" + nombreCliente + "]   RESUMEN - " + nombreCliente);
+            System.out.println("[" + nombreCliente + "] ==========================================");
+            System.out.println("[" + nombreCliente + "] Plazas reservadas: " + plazasReservadas);
+            System.out.println("[" + nombreCliente + "] ==========================================");
+        }
+    }
+
+    /**
+     * Pre: Los recursos pueden ser null o estar abiertos
+     * Post: Todos los recursos se cierran de forma segura. Si ocurre un error
+     *       durante el cierre, se informa al usuario.
+     *
+     * @param in Stream de entrada a cerrar
+     * @param out Stream de salida a cerrar
+     */
+    private void cerrarRecursos(DataInputStream in, DataOutputStream out) {
+        try {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (cs != null && !cs.isClosed()) {
+                cs.close();
+            }
+            synchronized (CONSOLE_LOCK) {
+                System.out.println("[" + nombreCliente + "] Desconectado del servidor\n");
+            }
+        } catch (IOException e) {
+            synchronized (CONSOLE_LOCK) {
+                System.err.println("[" + nombreCliente + "] Error al cerrar conexión: " + e.getMessage());
+            }
+        }
     }
 }
+
