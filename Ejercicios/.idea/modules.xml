@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/01.ProgramacionConcurrente - PSP/01.ProgramacionConcurrente - PSP.iml" filepath="$PROJECT_DIR$/01.ProgramacionConcurrente - PSP/01.ProgramacionConcurrente - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/02.ResolucionEsperasActivas - PSP/02.ResolucionEsperasActivas - PSP.iml" filepath="$PROJECT_DIR$/02.ResolucionEsperasActivas - PSP/02.ResolucionEsperasActivas - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03.1ProgramacionMedianteSincronoMensajes/03.1ProgramacionMedianteSincronoMensajes.iml" filepath="$PROJECT_DIR$/03.1ProgramacionMedianteSincronoMensajes/03.1ProgramacionMedianteSincronoMensajes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/03.ProgramacionConSemaforos - PSP/03.ProgramacionConSemaforos - PSP.iml" filepath="$PROJECT_DIR$/03.ProgramacionConSemaforos - PSP/03.ProgramacionConSemaforos - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04.ProgramacionSistemasCliente-Servidor/04.ProgramacionSistemasCliente-Servidor.iml" filepath="$PROJECT_DIR$/04.ProgramacionSistemasCliente-Servidor/04.ProgramacionSistemasCliente-Servidor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/04.ProgramacionSistemasCliente-Servidor - PSP/04.ProgramacionSistemasCliente-Servidor - PSP.iml" filepath="$PROJECT_DIR$/04.ProgramacionSistemasCliente-Servidor - PSP/04.ProgramacionSistemasCliente-Servidor - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PSP.iml" filepath="$PROJECT_DIR$/.idea/PSP.iml" />
+    </modules>
+  </component>
+</project>
