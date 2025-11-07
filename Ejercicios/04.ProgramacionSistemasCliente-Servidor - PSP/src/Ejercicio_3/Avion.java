@@ -1,4 +1,4 @@
-package ReservaVuelos;
+package Ejercicio_3;
 
 /**
  * Clase que representa el avión con 4 filas y 4 asientos (A, B, C, D).
