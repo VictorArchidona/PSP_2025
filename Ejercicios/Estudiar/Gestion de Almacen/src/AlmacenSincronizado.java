@@ -22,7 +22,7 @@ public class AlmacenSincronizado {
 
     public void push(Pieza pieza) throws InterruptedException {
 
-        hayPiezas.acquire();
+        huecosVacios.acquire();
         mutex.acquire();
         piezas.add(pieza);
         mutex.release();

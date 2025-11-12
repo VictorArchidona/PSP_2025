@@ -3,10 +3,12 @@ import java.util.ArrayList;
 public class Operario implements Runnable {
 
     private int id;
+    private AlmacenSincronizado almacen;
 
-    public Operario(int id) {
+    public Operario(int id, AlmacenSincronizado almacen) {
 
         this.id = id;
+        this.almacen = almacen;
     }
 
     //El hilo lo que hace es meter la pieza creada en el run y meterlo dentro de la pila en AlmacenSincronizado
@@ -19,10 +21,9 @@ public class Operario implements Runnable {
 
             Pieza pieza = new Pieza(i, nombre);
 
-            AlmacenSincronizado as = new AlmacenSincronizado(new ArrayList<>());
-
             try {
-                as.push(pieza);
+                almacen.push(pieza);
+                System.out.println("Operario " + id + " produjo: " + nombre);
 
             } catch (InterruptedException e) {
 

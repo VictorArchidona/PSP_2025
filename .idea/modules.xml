@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/01.ProgramacionConcurrente - PSP/01.ProgramacionConcurrente - PSP.iml" filepath="$PROJECT_DIR$/Ejercicios/01.ProgramacionConcurrente - PSP/01.ProgramacionConcurrente - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/02.ResolucionEsperasActivas - PSP/02.ResolucionEsperasActivas - PSP.iml" filepath="$PROJECT_DIR$/Ejercicios/02.ResolucionEsperasActivas - PSP/02.ResolucionEsperasActivas - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/03.1ProgramacionMedianteSincronoMensajes/03.1ProgramacionMedianteSincronoMensajes.iml" filepath="$PROJECT_DIR$/Ejercicios/03.1ProgramacionMedianteSincronoMensajes/03.1ProgramacionMedianteSincronoMensajes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/03.ProgramacionConSemaforos - PSP/03.ProgramacionConSemaforos - PSP.iml" filepath="$PROJECT_DIR$/Ejercicios/03.ProgramacionConSemaforos - PSP/03.ProgramacionConSemaforos - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/04.ProgramacionSistemasCliente-Servidor - PSP/04.ProgramacionSistemasCliente-Servidor - PSP.iml" filepath="$PROJECT_DIR$/Ejercicios/04.ProgramacionSistemasCliente-Servidor - PSP/04.ProgramacionSistemasCliente-Servidor - PSP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ejercicios/Estudiar/Estudiar.iml" filepath="$PROJECT_DIR$/Ejercicios/Estudiar/Estudiar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PSP_2025.iml" filepath="$PROJECT_DIR$/.idea/PSP_2025.iml" />
+    </modules>
+  </component>
+</project>
